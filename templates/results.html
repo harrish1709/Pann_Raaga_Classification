@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raga Comparison Results</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f5f5f7; color: #1d1d1f; margin: 0; padding: 2em; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 2em; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; color: #6e6e73; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.5em; margin-bottom: 1em; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1em; margin-bottom: 2em; }
+        .result-card { background-color: #f5f5f7; padding: 1.5em; border-radius: 8px; text-align: center; }
+        .result-card h3 { margin: 0 0 0.5em 0; font-size: 1em; color: #1d1d1f; }
+        .result-card p { font-size: 1.75em; font-weight: 600; margin: 0; color: #007aff; }
+        .plot { text-align: center; margin-bottom: 2em; background: #f5f5f7; padding: 1em; border-radius: 8px; }
+        .plot img { max-width: 100%; border-radius: 5px; }
+        a.back-link { display: block; width: fit-content; margin: 2em auto 0 auto; background-color: #007aff; color: white; text-decoration: none; font-weight: 600; padding: 0.8em 1.5em; border-radius: 8px; }
+        a.back-link:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Results: {{ raga1_name }} vs. {{ raga2_name }}</h1>
+
+        <h2>Similarity Scores 📊</h2>
+        <div class="results-grid">
+            <div class="result-card">
+                <h3>Note Distribution</h3>
+                <p>{{ result.note_similarity }}</p>
+            </div>
+            <div class="result-card">
+                <h3>Pitch Contour (DTW)</h3>
+                <p>{{ result.contour_similarity }}</p>
+            </div>
+            <div class="result-card">
+                <h3>Bigram Phrases</h3>
+                <p>{{ result.bigram_similarity }}</p>
+            </div>
+            <div class="result-card">
+                <h3>Trigram Phrases</h3>
+                <p>{{ result.trigram_similarity }}</p>
+            </div>
+        </div>
+
+        <h2>Visualizations 📈</h2>
+        <div class="plot">
+            <h3>Note Distribution</h3>
+            <img src="{{ url_for('static', filename=result.note_img) }}" alt="Note Distribution Plot">
+        </div>
+        {% if result.bigram_img %}
+        <div class="plot">
+            <h3>Top Bigrams</h3>
+            <img src="{{ url_for('static', filename=result.bigram_img) }}" alt="Bigram Plot">
+        </div>
+        {% endif %}
+        {% if result.trigram_img %}
+        <div class="plot">
+            <h3>Top Trigrams</h3>
+            <img src="{{ url_for('static', filename=result.trigram_img) }}" alt="Trigram Plot">
+        </div>
+        {% endif %}
+        <div class="plot">
+            <h3>Pitch Contour</h3>
+            <img src="{{ url_for('static', filename=result.contour_img) }}" alt="Pitch Contour Plot">
+        </div>
+
+        <a href="/" class="back-link">⬅️ Compare Again</a>
+    </div>
+</body>
+</html>
